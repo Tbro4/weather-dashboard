@@ -20,7 +20,7 @@ function getLatLon(event) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
+      //   console.log(data);
       city = data[0].name;
       lat = data[0].lat;
       lon = data[0].lon;
@@ -40,29 +40,56 @@ function getLatLon(event) {
           return response.json();
         })
         .then(function (data) {
-          console.log(data);
-
+          // create dynamic elements
           var cityName = $("<h2>");
-          var date = $("<h2>");
-          var temp = $("<h4>");
-          var wind = $("<h4>");
-          var humidity = $("<h4>");
-          var uv = $("<h4>");
+          var date = $("<h3>");
+          var temp = $("<p>");
+          var wind = $("<p>");
+          var humidity = $("<p>");
+          var uv = $("<p>UV Index: </p>" + span);
+          var span = $("<span>");
+          var uvInt = data.current.uvi;
 
+          //add text to elements
+          span.text(data.current.uvi);
           cityName.text(city);
           date.text(today.format("MMM Do, YYYY"));
           temp.text("Temperature: " + data.current.temp + " °F");
           wind.text("Wind: " + data.current.wind_speed + " MPH");
           humidity.text("Humidity: " + data.current.humidity + "%");
-          uv.text("UV Index: " + data.current.uvi);
 
-          $("#currentWeather")
-            .append(cityName)
-            .append(date)
-            .append(temp)
-            .append(wind)
-            .append(humidity)
-            .append(uv);
+          //change background color of UV Index #
+          if (uvInt < 3) {
+            $(span).css({
+              "background-color": "green",
+
+              "border-radius": "5px",
+            });
+          } else if (uvInt < 6) {
+            $(span).css({
+              "background-color": "yellow",
+
+              "border-radius": "5px",
+            });
+          } else if (uvInt < 8) {
+            $(span).css({
+              "background-color": "orange",
+
+              "border-radius": "5px",
+            });
+          } else {
+            $(span).css({
+              "background-color": "red",
+
+              "border-radius": "5px",
+            });
+          }
+
+          //append span to uv <p> element
+          uv.append(span);
+
+          //append values to elements
+          $("#currentWeather").append(cityName, date, temp, wind, humidity, uv);
         });
     });
 }

@@ -19,16 +19,19 @@
   </head>
   <body>
     <header class="header"><h1>Weather Dashboard</h1></header>
-    <h2 class="p-2 m-0">Search for a City:</h2>
+    <div class="d-flex col-10">
+    <div class="col-4"><h2 class="p-2 m-0">Search for a City:</h2>
     <nav class="navbar navbar-light bg-light">
   <div class="container-fluid ">
-    <form class="d-flex col-2 border-bottom border-2 border-dark p-2 ">
+    <form class="d-flex border-bottom border-2 border-dark p-2 ">
       <input class="form-control me-2" id="search" type="search" placeholder="City" aria-label="Search">
       <button class="btn btn-outline-secondary searchBtn" type="submit">Search</button>
     </form>
   </div>
-  <div class="container" id="previousSearch"></div>
-  <div class="container" id="currentWeather"></div>
+  <div class="container" id="previousSearch">Previous Searches</div>
+  </div>
+  <div class="container col-8 " id="currentWeather"></div>
+  </div>
   <div class="container" id="forecast"></div>
 </nav>
     <script
