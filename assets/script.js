@@ -6,6 +6,8 @@ var x;
 var lat;
 var lon;
 var today = moment();
+var cityBtnArr = [];
+var city;
 
 //called on search click
 function getLatLon(event) {
@@ -155,24 +157,50 @@ function getLatLon(event) {
           //clear input field
           citySearched.val("");
 
-          //create button
+          //function to create button and store name to local array
+          function generateBtn() {
+            console.log(city);
+            var prevBtn = $("<button>");
+            //add city text, classes to button
+            prevBtn
+              .text(city)
+              .addClass(
+                "container-fluid btn btn-outline-primary prevSearchBtn mt-2"
+              )
+              .attr("id", city);
+            //append btn to div
+            $("#previousSearch").append(prevBtn);
 
-          var prevBtn = $("<button>");
-          //add city text, classes to button
-          prevBtn
-            .text(city)
-            .addClass(
-              "container-fluid btn btn-outline-secondary prevSearchBtn mt-2"
-            )
-            .attr("id", city);
-          //append btn to div
-          $("#previousSearch").append(prevBtn);
+            var cityString = city;
+            cityBtnArr.push(cityString);
+
+            localStorage.setItem("cityStorage", JSON.stringify(cityBtnArr));
+            console.log(cityBtnArr);
+          }
+          generateBtn();
         });
     });
 }
+//loads locally stored buttons on page load
+function loadData() {
+  var loadData = localStorage.getItem("cityStorage");
+  if (loadData == null || loadData == "") return;
 
+  var cityBtnArr = JSON.parse(loadData);
+  //removes duplicates
+  var uniqueCities = [...new Set(cityBtnArr)];
+
+  for (i = 0; i < uniqueCities.length; i++) {
+    var prevBtn = $("<button>");
+    prevBtn
+      .addClass("container-fluid btn btn-outline-primary prevSearchBtn mt-2")
+      .attr("id", uniqueCities[i])
+      .text(uniqueCities[i]);
+    $("#previousSearch").append(prevBtn);
+  }
+}
+loadData();
 searchBtn.on("click", getLatLon);
-
 prevSearchDiv.on("click", function (e) {
   //sets x to city name (button text)
   x = e.target.id;
