@@ -1,6 +1,8 @@
 var searchBtn = $(".searchBtn");
+var prevSearchDiv = $("#previousSearch");
 var APIKey = "807b59e0ca55857eaed3046b8daf7b7b";
 var citySearched = $("#search");
+var x;
 var lat;
 var lon;
 var today = moment();
@@ -8,6 +10,10 @@ var today = moment();
 //called on search click
 function getLatLon(event) {
   event.preventDefault();
+  if (citySearched.val() === "") {
+    citySearched.val(x);
+  }
+  console.log("clicked");
   //empties div
   $("#currentWeather").empty();
   $("#forecast").empty();
@@ -43,7 +49,6 @@ function getLatLon(event) {
           return response.json();
         })
         .then(function (data) {
-          console.log(data);
           // create dynamic elements
           var cityName = $("<h2>");
           var date = $("<h3>");
@@ -147,16 +152,31 @@ function getLatLon(event) {
               });
             $("#forecast").append(forecastCard);
           }
+          //clear input field
+          citySearched.val("");
 
-          //append a button with city name under previous searches
+          //create button
+
           var prevBtn = $("<button>");
-          prevBtn.text(city);
+          //add city text, classes to button
+          prevBtn
+            .text(city)
+            .addClass(
+              "container-fluid btn btn-outline-secondary prevSearchBtn mt-2"
+            )
+            .attr("id", city);
+          //append btn to div
           $("#previousSearch").append(prevBtn);
-          prevBtn.addClass(
-            "container-fluid btn btn-outline-secondary searchBtn mt-2"
-          );
         });
     });
 }
 
 searchBtn.on("click", getLatLon);
+
+prevSearchDiv.on("click", function (e) {
+  //sets x to city name (button text)
+  x = e.target.id;
+  //delete button
+  e.target.style.display = "none";
+  getLatLon(e);
+});
