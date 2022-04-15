@@ -15,13 +15,13 @@ function getLatLon(event) {
   if (citySearched.val() === "") {
     citySearched.val(x);
   }
-  console.log("clicked");
+
   //empties div
   $("#currentWeather").empty();
   $("#forecast").empty();
   //endpoint to obtain lat/lon from city
   var latLonURL =
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    "https://api.openweathermap.org/geo/1.0/direct?q=" +
     citySearched.val() +
     "&appid=" +
     APIKey;
@@ -66,7 +66,7 @@ function getLatLon(event) {
 
           icon.attr(
             "src",
-            "http://openweathermap.org/img/wn/" + iconID + "@2x.png"
+            "https://openweathermap.org/img/wn/" + iconID + "@2x.png"
           );
 
           //add text to elements
@@ -130,7 +130,7 @@ function getLatLon(event) {
 
             forecastID.attr(
               "src",
-              "http://openweathermap.org/img/wn/" + forecastIcon + "@2x.png"
+              "https://openweathermap.org/img/wn/" + forecastIcon + "@2x.png"
             );
 
             forecastDate.text(unixDate);
@@ -159,7 +159,6 @@ function getLatLon(event) {
 
           //function to create button and store name to local array
           function generateBtn() {
-            console.log(city);
             var prevBtn = $("<button>");
             //add city text, classes to button
             prevBtn
@@ -175,7 +174,6 @@ function getLatLon(event) {
             cityBtnArr.push(cityString);
 
             localStorage.setItem("cityStorage", JSON.stringify(cityBtnArr));
-            console.log(cityBtnArr);
           }
           generateBtn();
         });
